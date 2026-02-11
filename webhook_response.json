@@ -1,0 +1,198 @@
+{
+  "get_orders": [
+    {
+      "success": true,
+      "count": 1,
+      "message": "Fetched 1 order(s) of page 1!",
+      "data": [
+        {
+          "total": {
+            "deliveryPrice": 7,
+            "deliveryCost": 6,
+            "totalPrice": 147
+          },
+          "refunded": false,
+          "_id": "69765b720f6f7704aa4792de",
+          "reference": 1,
+          "customer": {
+            "name": "Taoufik",
+            "phone": "28105749",
+            "address": "Test",
+            "city": "Beja",
+            "ip": "102.172.127.104",
+            "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 [FBAN/FBIOS;FBAV/545.0.0.12.108;FBBV/865730320;FBDV/iPhone12,1;FBMD/iPhone;FBSN/iOS;FBSV/18.6.2;FBSS/2;FBCR/;FBID/phone;FBLC/en_GB;FBOP/80]",
+            "hasOtherOrders": false
+          },
+          "cart": [
+            {
+              "product": {
+                "bundles": {
+                  "discountType": "fixed",
+                  "options": []
+                },
+                "_id": "6976550294e1d170e96f2692",
+                "name": "Sac à main",
+                "slug": "sac-a-main",
+                "sku": "product-4",
+                "images": [
+                  {
+                    "sm": "https://cdn.converty.shop/images/95f59042d2669b693dbbd401beb7032950ddd06b121a13a21ae9caa3f7f8c277_sm.webp",
+                    "md": "https://cdn.converty.shop/images/95f59042d2669b693dbbd401beb7032950ddd06b121a13a21ae9caa3f7f8c277_md.webp",
+                    "lg": "https://cdn.converty.shop/images/95f59042d2669b693dbbd401beb7032950ddd06b121a13a21ae9caa3f7f8c277_lg.webp"
+                  }
+                ],
+                "price": 7,
+                "cost": 16,
+                "deliveryPrice": 7,
+                "deliveryCost": 9,
+                "trackStock": true,
+                "options": [],
+                "newVariants": [],
+                "status": "shown",
+                "variants": [],
+                "reference": 7,
+                "stock": 60
+              },
+              "quantity": 1,
+              "selectedVariants": [],
+              "pricePerUnit": 140,
+              "selectedBundleOptionId": null,
+              "selectedOptionsPerItem": []
+            }
+          ],
+          "status": "uploaded",
+          "deliveryCompany": "navex",
+          "history": [
+            {
+              "actionTaker": "Customer",
+              "status": "abandoned",
+              "timestamp": "2026-01-25T18:05:51.295Z"
+            },
+            {
+              "status": "confirmed",
+              "timestamp": "2026-01-25T18:37:17.742Z",
+              "actionTaker": "adamwalha20@gmail.com"
+            },
+            {
+              "status": "uploaded",
+              "timestamp": "2026-01-25T18:37:17.785Z",
+              "actionTaker": "adamwalha20@gmail.com"
+            }
+          ],
+          "store": "697654f4bc02af0e6145c832",
+          "session": "9ffbf534-57ac-4dfd-b046-74962f80262f",
+          "paymentStatus": "paid",
+          "duplicated": false,
+          "isTest": true,
+          "currencyCode": "TND",
+          "createdAt": "2026-01-25T18:05:38.007Z",
+          "updatedAt": "2026-01-25T18:37:17.791Z",
+          "queuedAt": "2026-01-25T18:05:36.000Z",
+          "archived": false,
+          "subscription": "000000000000000000000000",
+          "barcode": "699643662371",
+          "deliveryTrackable": true,
+          "exchange": false
+        }
+      ]
+    }
+  ],
+  "get_products": [
+    {
+      "success": true,
+      "count": 1,
+      "message": "Fetched 1 order(s) of page 1!",
+      "data": [
+        {
+          "total": {
+            "deliveryPrice": 7,
+            "deliveryCost": 6,
+            "totalPrice": 147
+          },
+          "refunded": false,
+          "_id": "69765b720f6f7704aa4792de",
+          "reference": 1,
+          "customer": {
+            "name": "Taoufik",
+            "phone": "28105749",
+            "address": "Test",
+            "city": "Beja",
+            "ip": "102.172.127.104",
+            "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 [FBAN/FBIOS;FBAV/545.0.0.12.108;FBBV/865730320;FBDV/iPhone12,1;FBMD/iPhone;FBSN/iOS;FBSV/18.6.2;FBSS/2;FBCR/;FBID/phone;FBLC/en_GB;FBOP/80]",
+            "hasOtherOrders": false
+          },
+          "cart": [
+            {
+              "product": {
+                "bundles": {
+                  "discountType": "fixed",
+                  "options": []
+                },
+                "_id": "6976550294e1d170e96f2692",
+                "name": "Sac à main",
+                "slug": "sac-a-main",
+                "sku": "product-4",
+                "images": [
+                  {
+                    "sm": "https://cdn.converty.shop/images/95f59042d2669b693dbbd401beb7032950ddd06b121a13a21ae9caa3f7f8c277_sm.webp",
+                    "md": "https://cdn.converty.shop/images/95f59042d2669b693dbbd401beb7032950ddd06b121a13a21ae9caa3f7f8c277_md.webp",
+                    "lg": "https://cdn.converty.shop/images/95f59042d2669b693dbbd401beb7032950ddd06b121a13a21ae9caa3f7f8c277_lg.webp"
+                  }
+                ],
+                "price": 7,
+                "cost": 16,
+                "deliveryPrice": 7,
+                "deliveryCost": 9,
+                "trackStock": true,
+                "options": [],
+                "newVariants": [],
+                "status": "shown",
+                "variants": [],
+                "reference": 7,
+                "stock": 60
+              },
+              "quantity": 1,
+              "selectedVariants": [],
+              "pricePerUnit": 140,
+              "selectedBundleOptionId": null,
+              "selectedOptionsPerItem": []
+            }
+          ],
+          "status": "uploaded",
+          "deliveryCompany": "navex",
+          "history": [
+            {
+              "actionTaker": "Customer",
+              "status": "abandoned",
+              "timestamp": "2026-01-25T18:05:51.295Z"
+            },
+            {
+              "status": "confirmed",
+              "timestamp": "2026-01-25T18:37:17.742Z",
+              "actionTaker": "adamwalha20@gmail.com"
+            },
+            {
+              "status": "uploaded",
+              "timestamp": "2026-01-25T18:37:17.785Z",
+              "actionTaker": "adamwalha20@gmail.com"
+            }
+          ],
+          "store": "697654f4bc02af0e6145c832",
+          "session": "9ffbf534-57ac-4dfd-b046-74962f80262f",
+          "paymentStatus": "paid",
+          "duplicated": false,
+          "isTest": true,
+          "currencyCode": "TND",
+          "createdAt": "2026-01-25T18:05:38.007Z",
+          "updatedAt": "2026-01-25T18:37:17.791Z",
+          "queuedAt": "2026-01-25T18:05:36.000Z",
+          "archived": false,
+          "subscription": "000000000000000000000000",
+          "barcode": "699643662371",
+          "deliveryTrackable": true,
+          "exchange": false
+        }
+      ]
+    }
+  ]
+}
