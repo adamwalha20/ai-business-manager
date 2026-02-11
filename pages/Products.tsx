@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { Product } from '../types';
 import { triggerWebhook } from '../services/n8nService';
 import { Plus, Edit2, AlertOctagon, Loader2, RefreshCw } from 'lucide-react';

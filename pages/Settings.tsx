@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { Save, Volume2, Clock, Truck, Sliders } from 'lucide-react';
 import { triggerWebhook } from '../services/n8nService';
 

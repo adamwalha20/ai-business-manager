@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import * as React from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { getConversations } from '../services/mockService';
 import { triggerWebhook } from '../services/n8nService';
 import { Conversation, Platform, Message } from '../types';
@@ -175,8 +176,8 @@ const Messages: React.FC = () => {
                     </div>
                     <div>
                       <div className={`p-4 rounded-2xl ${msg.is_ai_reply
-                          ? 'bg-brand-card border border-gray-800 text-gray-200 rounded-tl-none'
-                          : 'bg-brand-green text-black rounded-tr-none font-medium'
+                        ? 'bg-brand-card border border-gray-800 text-gray-200 rounded-tl-none'
+                        : 'bg-brand-green text-black rounded-tr-none font-medium'
                         }`}>
                         <p className="text-sm leading-relaxed">{msg.content}</p>
                       </div>

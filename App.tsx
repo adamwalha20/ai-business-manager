@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState } from 'react';
 import { HashRouter } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 import Sidebar from './components/Sidebar';
@@ -31,7 +32,7 @@ const App: React.FC = () => {
 
   return (
     <HashRouter>
-      <div className="min-h-screen bg-brand-black text-white font-sans selection:bg-brand-green selection:text-black">
+      <div className="flex flex-col lg:flex-row min-h-screen bg-brand-black text-white font-sans selection:bg-brand-green selection:text-black">
         <Sidebar
           activePage={activePage}
           setActivePage={(page) => {
@@ -42,7 +43,7 @@ const App: React.FC = () => {
           onClose={() => setIsSidebarOpen(false)}
         />
 
-        <main className="lg:ml-64 min-h-screen transition-all duration-300">
+        <main className="flex-1 min-h-screen transition-all duration-300 w-full relative">
           {/* Top Bar for Mobile */}
           <div className="lg:hidden h-20 bg-brand-black border-b border-brand-card flex items-center px-4 fixed top-0 w-full z-40">
             <button
