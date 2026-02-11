@@ -1,7 +1,7 @@
 import { API_CONFIG } from './config';
 
 export interface WebhookPayload {
-  action: 'sync_orders' | 'generate_report' | 'chat_message' | 'cancel_order' | 'check_status' | 'get_dashboard_data' | 'get_orders' | 'get_products' | 'add_product' | 'update_product' | 'delete_product' | 'export_data' | 'update_settings' | 'filter_orders' | 'filter_messages' | 'call_customer' | 'chat_options';
+  action: 'sync_orders' | 'generate_report' | 'chat_message' | 'cancel_order' | 'check_status' | 'get_dashboard_data' | 'get_orders' | 'get_products' | 'get_messages' | 'add_product' | 'update_product' | 'delete_product' | 'export_data' | 'update_settings' | 'filter_orders' | 'filter_messages' | 'call_customer' | 'chat_options';
   [key: string]: any;
 }
 
