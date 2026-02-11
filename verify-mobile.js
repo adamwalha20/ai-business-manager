@@ -13,9 +13,9 @@ async function verifyMobileLayout() {
     });
     const page = await context.newPage();
 
-    console.log('Navigating to app (Mobile View)...');
-    await page.goto('http://localhost:5173');
-    await page.waitForTimeout(2000); // Wait for load
+    console.log('Navigating to app (Mobile View on port 3000)...');
+    await page.goto('http://localhost:3000');
+    await page.waitForTimeout(3000); // Wait for load
 
     // Screenshot 1: Sidebar Hidden
     console.log('Taking screenshot: Sidebar Hidden');

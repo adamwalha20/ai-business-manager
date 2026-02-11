@@ -14,10 +14,10 @@ const __dirname = path.dirname(__filename);
     // Set viewport to a reasonable size
     await page.setViewportSize({ width: 1280, height: 720 });
 
-    console.log('Navigating to app...');
+    console.log('Navigating to app on port 3000...');
     await page.goto('http://localhost:3000');
-
-    // Helper to take screenshot
+    // Increase wait time for the dashboard to load data
+    await page.waitForTimeout(3000);
     const takeScreenshot = async (name) => {
         const screenshotPath = path.resolve(__dirname, `screenshot-${name}.png`);
         await page.screenshot({ path: screenshotPath, fullPage: true });

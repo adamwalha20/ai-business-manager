@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Filter, MoreVertical, Truck, CheckCircle, XCircle, Clock, AlertTriangle, RefreshCw, Loader2, Phone } from 'lucide-react';
 import { getRecentOrders } from '../services/mockService';
 import { triggerWebhook } from '../services/n8nService';

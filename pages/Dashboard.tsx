@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { ArrowUpRight, ArrowDownRight, TrendingUp, Package, MessageCircle, AlertCircle, Loader2, RefreshCw } from 'lucide-react';
 import { getKPIs } from '../services/mockService';
@@ -39,23 +40,20 @@ const Dashboard: React.FC = () => {
       // Parse n8n response structure dynamically
       // Handles: [ { body: { data: [...] } } ] OR { data: [...] } OR [...]
       if (Array.isArray(response)) {
-        if (response[0]?.body?.data) {
-          rawOrders = response[0].body.data;
-        } else if (response[0]?.data) {
-          rawOrders = response[0].data;
+        const first = response[0];
+        if (first?.body?.data) {
+          rawOrders = first.body.data;
+        } else if (first?.data) {
+          rawOrders = first.data;
         } else {
           rawOrders = response;
         }
       } else if (response && typeof response === 'object') {
-        // @ts-ignore
-        if (Array.isArray(response.data)) {
-          // @ts-ignore
-          rawOrders = response.data;
-        }
-        // @ts-ignore
-        else if (response.body?.data) {
-          // @ts-ignore
-          rawOrders = response.body.data;
+        const resObj = response as any;
+        if (Array.isArray(resObj.data)) {
+          rawOrders = resObj.data;
+        } else if (resObj.body?.data) {
+          rawOrders = resObj.body.data;
         }
       }
 
