@@ -8,15 +8,18 @@ import {
   LogOut,
   Hexagon,
   Maximize,
-  Minimize
+  Minimize,
+  X
 } from 'lucide-react';
 
 interface SidebarProps {
   activePage: string;
   setActivePage: (page: string) => void;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ activePage, setActivePage }) => {
+const Sidebar: React.FC<SidebarProps> = ({ activePage, setActivePage, isOpen, onClose }) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   const menuItems = [
@@ -50,58 +53,81 @@ const Sidebar: React.FC<SidebarProps> = ({ activePage, setActivePage }) => {
     };
   }, []);
 
+  const sidebarClasses = `
+    fixed inset-y-0 left-0 z-50 w-64 bg-brand-black border-r border-brand-card 
+    transform transition-transform duration-300 ease-in-out
+    lg:translate-x-0 lg:static lg:inset-auto
+    ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+  `;
+
   return (
-    <div className="w-20 lg:w-64 h-screen bg-brand-black border-r border-brand-card flex flex-col justify-between fixed left-0 top-0 z-50 transition-all duration-300">
-      <div>
-        <div className="h-20 flex items-center justify-center lg:justify-start lg:px-8 border-b border-brand-card">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-brand-green rounded-xl flex items-center justify-center text-black font-bold shadow-[0_0_15px_rgba(16,185,129,0.5)]">
-              <Hexagon size={24} fill="black" className="text-brand-green" />
+    <>
+      {/* Mobile Backdrop */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm"
+          onClick={onClose}
+        />
+      )}
+
+      <div className={sidebarClasses}>
+        <div>
+          <div className="h-20 flex items-center justify-center lg:justify-start lg:px-8 border-b border-brand-card">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-brand-green rounded-xl flex items-center justify-center text-black font-bold shadow-[0_0_15px_rgba(16,185,129,0.5)]">
+                <Hexagon size={24} fill="black" className="text-brand-green" />
+              </div>
+              <span className="text-xl font-bold tracking-wide">
+                MR<span className="text-brand-green"> Robot</span>
+              </span>
+              <button
+                onClick={onClose}
+                className="lg:hidden absolute right-4 text-gray-400 hover:text-white"
+              >
+                <X size={24} />
+              </button>
             </div>
-            <span className="hidden lg:block text-xl font-bold tracking-wide">
-              MR<span className="text-brand-green"> Robot</span>
-            </span>
           </div>
+
+          <nav className="mt-8 flex flex-col gap-2 px-3">
+            {menuItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setActivePage(item.id)}
+                className={`flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 group relative
+                ${activePage === item.id
+                    ? 'bg-brand-card text-brand-green shadow-lg'
+                    : 'text-gray-400 hover:bg-brand-card/50 hover:text-white'
+                  }`}
+              >
+                <item.icon size={22} className={activePage === item.id ? 'text-brand-green' : 'group-hover:text-brand-orange transition-colors'} />
+                <span className="font-medium">{item.label}</span>
+                {item.badge && (
+                  <span className="absolute right-2 top-2 lg:top-auto lg:right-3 w-2 h-2 lg:w-5 lg:h-5 bg-brand-orange rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-md">
+                    <span className="hidden lg:inline">{item.badge}</span>
+                  </span>
+                )}
+              </button>
+            ))}
+          </nav>
         </div>
 
-        <nav className="mt-8 flex flex-col gap-2 px-3">
-          {menuItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => setActivePage(item.id)}
-              className={`flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 group relative
-                ${activePage === item.id
-                  ? 'bg-brand-card text-brand-green shadow-lg'
-                  : 'text-gray-400 hover:bg-brand-card/50 hover:text-white'
-                }`}
-            >
-              <item.icon size={22} className={activePage === item.id ? 'text-brand-green' : 'group-hover:text-brand-orange transition-colors'} />
-              <span className="hidden lg:block font-medium">{item.label}</span>
-              {item.badge && (
-                <span className="absolute right-2 top-2 lg:top-auto lg:right-3 w-2 h-2 lg:w-5 lg:h-5 bg-brand-orange rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-md">
-                  <span className="hidden lg:inline">{item.badge}</span>
-                </span>
-              )}
-            </button>
-          ))}
-        </nav>
-      </div>
+        <div className="p-3 mb-4 space-y-2">
+          <button
+            onClick={toggleFullScreen}
+            className="flex items-center gap-3 px-3 py-3 w-full rounded-xl text-gray-500 hover:bg-brand-card/50 hover:text-white transition-all"
+          >
+            {isFullScreen ? <Minimize size={22} /> : <Maximize size={22} />}
+            <span className="font-medium">{isFullScreen ? 'Exit Full Screen' : 'Full Screen'}</span>
+          </button>
 
-      <div className="p-3 mb-4 space-y-2">
-        <button
-          onClick={toggleFullScreen}
-          className="flex items-center gap-3 px-3 py-3 w-full rounded-xl text-gray-500 hover:bg-brand-card/50 hover:text-white transition-all"
-        >
-          {isFullScreen ? <Minimize size={22} /> : <Maximize size={22} />}
-          <span className="hidden lg:block font-medium">{isFullScreen ? 'Exit Full Screen' : 'Full Screen'}</span>
-        </button>
-
-        <button className="flex items-center gap-3 px-3 py-3 w-full rounded-xl text-gray-500 hover:bg-red-500/10 hover:text-red-500 transition-all">
-          <LogOut size={22} />
-          <span className="hidden lg:block font-medium">Logout</span>
-        </button>
+          <button className="flex items-center gap-3 px-3 py-3 w-full rounded-xl text-gray-500 hover:bg-red-500/10 hover:text-red-500 transition-all">
+            <LogOut size={22} />
+            <span className="font-medium">Logout</span>
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
