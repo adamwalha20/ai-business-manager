@@ -3,17 +3,19 @@ import { useEffect, useState } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { ArrowUpRight, ArrowDownRight, TrendingUp, Package, MessageCircle, AlertCircle, Loader2, RefreshCw } from 'lucide-react';
 import { getKPIs } from '../services/mockService';
-import { triggerWebhook } from '../services/n8nService';
+import { triggerWebhook, extractN8NData } from '../services/n8nService';
 import { KPI } from '../types';
 
 const Dashboard: React.FC = () => {
   const [kpi, setKpi] = useState<KPI | null>(null);
+  const [timeRange, setTimeRange] = useState<'weekly' | 'monthly'>('weekly');
   const [chartData, setChartData] = useState<any[]>([]);
   const [platformData, setPlatformData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [allOrders, setAllOrders] = useState<any[]>([]);
   const [generatingReport, setGeneratingReport] = useState(false);
 
-  // Default mock data for charts in case webhook doesn't return them
+  // Default mock data ... (omitted for brevity in this block if possible, but I should probably keep it to avoid breakage)
   const defaultChartData = [
     { name: 'Mon', revenue: 4000, orders: 240 },
     { name: 'Tue', revenue: 3000, orders: 139 },
@@ -30,87 +32,78 @@ const Dashboard: React.FC = () => {
     { name: 'Conv', value: 80 },
   ];
 
+  const aggregateData = (orders: any[], range: 'weekly' | 'monthly') => {
+    if (!orders || orders.length === 0) return { chartData: [], pending: 0 };
+
+    // 1. Count pending
+    const pending = orders.filter(o =>
+      ['pending', 'new', 'confirmed', 'processing', 'ready_to_ship', 'uploaded'].includes(o.status?.toLowerCase())
+    ).length;
+
+    // 2. Calculate Chart Data
+    const days = range === 'weekly' ? 7 : 30;
+    const chartMap = new Map<string, { name: string; revenue: number; orders: number }>();
+    const today = new Date();
+
+    // Initialize last X days with 0 values
+    for (let i = days - 1; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(today.getDate() - i);
+      const dateKey = d.toISOString().split('T')[0];
+      const label = range === 'weekly'
+        ? d.toLocaleDateString('en-US', { weekday: 'short' })
+        : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      chartMap.set(dateKey, { name: label, revenue: 0, orders: 0 });
+    }
+
+    // Aggregate real data
+    orders.forEach(order => {
+      if (order.createdAt) {
+        const dateKey = order.createdAt.split('T')[0];
+        if (chartMap.has(dateKey)) {
+          const entry = chartMap.get(dateKey)!;
+          const price = order.total?.totalPrice ?? order.total ?? 0;
+          entry.revenue += (Number(price) || 0);
+          entry.orders += 1;
+        }
+      }
+    });
+
+    return { chartData: Array.from(chartMap.values()), pending };
+  };
+
   const fetchDashboardData = async () => {
     setLoading(true);
     try {
       const response = await triggerWebhook({ action: 'get_dashboard_data' });
-
-      let rawOrders: any[] = [];
-
-      // Parse n8n response structure dynamically
-      // Handles: [ { body: { data: [...] } } ] OR { data: [...] } OR [...]
-      if (Array.isArray(response)) {
-        const first = response[0];
-        if (first?.body?.data) {
-          rawOrders = first.body.data;
-        } else if (first?.data) {
-          rawOrders = first.data;
-        } else {
-          rawOrders = response;
-        }
-      } else if (response && typeof response === 'object') {
-        const resObj = response as any;
-        if (Array.isArray(resObj.data)) {
-          rawOrders = resObj.data;
-        } else if (resObj.body?.data) {
-          rawOrders = resObj.body.data;
-        }
-      }
+      const rawOrders = extractN8NData(response);
+      setAllOrders(rawOrders);
 
       console.log("Parsed Orders for Dashboard:", rawOrders);
 
       if (rawOrders.length > 0) {
-        // 1. Calculate KPIs
-        const totalRevenue = rawOrders.reduce((acc, order) => acc + (Number(order.total) || 0), 0);
-        const totalOrders = rawOrders.length;
+        // Calculate KPIs
+        const totalRevenue = rawOrders.reduce((acc, order) => {
+          const price = order.total?.totalPrice ?? order.total ?? 0;
+          return acc + (Number(price) || 0);
+        }, 0);
+        const totalOrdersCount = rawOrders.length;
 
-        // Count statuses
-        const pending = rawOrders.filter(o =>
-          ['pending', 'new', 'confirmed', 'processing', 'ready_to_ship', 'uploaded'].includes(o.status?.toLowerCase())
-        ).length;
-
-        // 2. Calculate Chart Data (Last 7 Days)
-        const days = 7;
-        const chartMap = new Map<string, { name: string; revenue: number; orders: number }>();
-        const today = new Date();
-
-        // Initialize last 7 days with 0 values
-        for (let i = days - 1; i >= 0; i--) {
-          const d = new Date();
-          d.setDate(today.getDate() - i);
-          const dateKey = d.toISOString().split('T')[0];
-          const dayName = d.toLocaleDateString('en-US', { weekday: 'short' });
-          chartMap.set(dateKey, { name: dayName, revenue: 0, orders: 0 });
-        }
-
-        // Aggregate real data
-        rawOrders.forEach(order => {
-          if (order.createdAt) {
-            const dateKey = order.createdAt.split('T')[0];
-            if (chartMap.has(dateKey)) {
-              const entry = chartMap.get(dateKey)!;
-              entry.revenue += (Number(order.total) || 0);
-              entry.orders += 1;
-            }
-          }
-        });
-
-        const generatedChartData = Array.from(chartMap.values());
+        const { chartData: generatedChartData, pending } = aggregateData(rawOrders, timeRange);
 
         // Update State
         setKpi({
           revenue: totalRevenue,
-          revenue_growth: 12.5, // Requires historical data comparison, keeping static
-          orders: totalOrders,
-          orders_growth: 8.4,   // Keeping static
-          ai_handled_rate: 92,  // Keeping static
+          revenue_growth: 12.5,
+          orders: totalOrdersCount,
+          orders_growth: 8.4,
+          ai_handled_rate: 92,
           pending_shipments: pending
         });
 
         setChartData(generatedChartData);
-        setPlatformData(defaultPlatformData); // Source data not explicit in current webhook payload
+        setPlatformData(defaultPlatformData);
       } else {
-        console.warn('No orders found in webhook response, using mock data.');
         setKpi(getKPIs());
         setChartData(defaultChartData);
         setPlatformData(defaultPlatformData);
@@ -128,6 +121,15 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     fetchDashboardData();
   }, []);
+
+  // Use effect to re-aggregate when timeRange changes
+  useEffect(() => {
+    if (allOrders.length > 0) {
+      const { chartData: generatedChartData, pending } = aggregateData(allOrders, timeRange);
+      setChartData(generatedChartData);
+      setKpi(prev => prev ? { ...prev, pending_shipments: pending } : null);
+    }
+  }, [timeRange]);
 
   const handleGenerateReport = async () => {
     setGeneratingReport(true);
@@ -168,8 +170,8 @@ const Dashboard: React.FC = () => {
           >
             <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
           </button>
-          <span className="text-sm text-brand-gray bg-brand-card px-4 py-2 rounded-full border border-gray-800">
-            Last 7 Days
+          <span className="text-sm text-brand-gray bg-brand-card px-4 py-2 rounded-full border border-gray-800 capitalize">
+            Last {timeRange === 'weekly' ? '7' : '30'} Days
           </span>
           <button
             onClick={handleGenerateReport}
@@ -266,8 +268,20 @@ const Dashboard: React.FC = () => {
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold text-white">Revenue Analytics</h2>
             <div className="flex gap-2">
-              <button className="text-xs font-medium text-brand-green bg-brand-greenDim px-3 py-1 rounded-lg">Weekly</button>
-              <button className="text-xs font-medium text-brand-gray hover:text-white px-3 py-1 rounded-lg">Monthly</button>
+              <button
+                id="view-weekly"
+                onClick={() => setTimeRange('weekly')}
+                className={`text-xs font-medium px-3 py-1 rounded-lg transition-colors ${timeRange === 'weekly' ? 'text-brand-green bg-brand-greenDim' : 'text-brand-gray hover:text-white bg-transparent'}`}
+              >
+                Weekly
+              </button>
+              <button
+                id="view-monthly"
+                onClick={() => setTimeRange('monthly')}
+                className={`text-xs font-medium px-3 py-1 rounded-lg transition-colors ${timeRange === 'monthly' ? 'text-brand-green bg-brand-greenDim' : 'text-brand-gray hover:text-white bg-transparent'}`}
+              >
+                Monthly
+              </button>
             </div>
           </div>
           <div className="h-[300px] w-full">

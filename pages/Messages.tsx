@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { getConversations } from '../services/mockService';
-import { triggerWebhook } from '../services/n8nService';
+import { triggerWebhook, extractN8NData } from '../services/n8nService';
 import { Conversation, Platform, Message } from '../types';
 import { Send, Bot, User, Facebook, Instagram, MoreHorizontal, Phone, Loader2, RefreshCw } from 'lucide-react';
 
@@ -17,16 +17,7 @@ const Messages: React.FC = () => {
     setIsLoading(true);
     try {
       const response = await triggerWebhook({ action: 'get_messages' });
-
-      let rawData: any[] = [];
-
-      // Dynamic parsing (Standard n8n response vs direct array)
-      if (Array.isArray(response)) {
-        rawData = (response[0]?.body?.data || response[0]?.data || response) as any[];
-      } else if (response && typeof response === 'object') {
-        const resObj = response as any;
-        rawData = (resObj.data || resObj.body?.data || []) as any[];
-      }
+      const rawData = extractN8NData(response);
 
       console.log("Fetched Messages raw data:", rawData);
 

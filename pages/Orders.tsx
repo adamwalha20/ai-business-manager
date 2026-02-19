@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { Search, Filter, MoreVertical, Truck, CheckCircle, XCircle, Clock, AlertTriangle, RefreshCw, Loader2, Phone } from 'lucide-react';
 import { getRecentOrders } from '../services/mockService';
-import { triggerWebhook } from '../services/n8nService';
+import { triggerWebhook, extractN8NData } from '../services/n8nService';
 import { Order, OrderStatus, Platform } from '../types';
 
 const Orders: React.FC = () => {
@@ -36,30 +36,7 @@ const Orders: React.FC = () => {
     try {
       // Fetch orders specifically using the new action
       const response = await triggerWebhook({ action: 'get_orders' });
-
-      let rawOrders: any[] = [];
-
-      // Robust Parsing Logic for various n8n response structures
-      if (Array.isArray(response)) {
-        if (response[0]?.body?.data) {
-          rawOrders = response[0].body.data;
-        } else if (response[0]?.data) {
-          rawOrders = response[0].data;
-        } else {
-          rawOrders = response;
-        }
-      } else if (response && typeof response === 'object') {
-        // @ts-ignore
-        if (Array.isArray(response.data)) {
-          // @ts-ignore
-          rawOrders = response.data;
-        }
-        // @ts-ignore
-        else if (response.body?.data) {
-          // @ts-ignore
-          rawOrders = response.body.data;
-        }
-      }
+      const rawOrders = extractN8NData(response);
 
       if (rawOrders && rawOrders.length > 0) {
         const mappedOrders: Order[] = rawOrders.map((o: any) => ({

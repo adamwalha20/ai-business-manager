@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { Product } from '../types';
-import { triggerWebhook } from '../services/n8nService';
+import { triggerWebhook, extractN8NData } from '../services/n8nService';
 import { Plus, Edit2, AlertOctagon, Loader2, RefreshCw } from 'lucide-react';
 
 const Products: React.FC = () => {
@@ -13,20 +13,7 @@ const Products: React.FC = () => {
         setLoading(true);
         try {
             const response = await triggerWebhook({ action: 'get_products' });
-
-            let rawProducts: any[] = [];
-
-            // Parsing logic for n8n response structure
-            if (Array.isArray(response)) {
-                if (response[0]?.body?.data) rawProducts = response[0].body.data;
-                else if (response[0]?.data) rawProducts = response[0].data;
-                else rawProducts = response;
-            } else if (response && typeof response === 'object') {
-                // @ts-ignore
-                if (Array.isArray(response.data)) rawProducts = response.data;
-                // @ts-ignore
-                else if (response.body?.data) rawProducts = response.body.data;
-            }
+            const rawProducts = extractN8NData(response);
 
             if (rawProducts && Array.isArray(rawProducts)) {
                 let itemsToMap: any[] = [];

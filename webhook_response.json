@@ -2,97 +2,83 @@
   "get_orders": [
     {
       "success": true,
-      "count": 1,
-      "message": "Fetched 1 order(s) of page 1!",
+      "count": 5,
+      "message": "Fetched 5 order(s) of page 1!",
       "data": [
         {
           "total": {
-            "deliveryPrice": 7,
-            "deliveryCost": 6,
-            "totalPrice": 147
+            "totalPrice": 56
           },
-          "refunded": false,
-          "_id": "69765b720f6f7704aa4792de",
-          "reference": 1,
+          "_id": "69972431414b003c80e2d49f",
+          "reference": 2542,
           "customer": {
-            "name": "Taoufik",
-            "phone": "28105749",
-            "address": "Test",
-            "city": "Beja",
-            "ip": "102.172.127.104",
-            "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 [FBAN/FBIOS;FBAV/545.0.0.12.108;FBBV/865730320;FBDV/iPhone12,1;FBMD/iPhone;FBSN/iOS;FBSV/18.6.2;FBSS/2;FBCR/;FBID/phone;FBLC/en_GB;FBOP/80]",
-            "hasOtherOrders": false
+            "name": "Ghanmi Djalel",
+            "phone": "24207511",
+            "address": "دوار هيشر",
+            "city": "Manouba"
           },
-          "cart": [
-            {
-              "product": {
-                "bundles": {
-                  "discountType": "fixed",
-                  "options": []
-                },
-                "_id": "6976550294e1d170e96f2692",
-                "name": "Sac à main",
-                "slug": "sac-a-main",
-                "sku": "product-4",
-                "images": [
-                  {
-                    "sm": "https://cdn.converty.shop/images/95f59042d2669b693dbbd401beb7032950ddd06b121a13a21ae9caa3f7f8c277_sm.webp",
-                    "md": "https://cdn.converty.shop/images/95f59042d2669b693dbbd401beb7032950ddd06b121a13a21ae9caa3f7f8c277_md.webp",
-                    "lg": "https://cdn.converty.shop/images/95f59042d2669b693dbbd401beb7032950ddd06b121a13a21ae9caa3f7f8c277_lg.webp"
-                  }
-                ],
-                "price": 7,
-                "cost": 16,
-                "deliveryPrice": 7,
-                "deliveryCost": 9,
-                "trackStock": true,
-                "options": [],
-                "newVariants": [],
-                "status": "shown",
-                "variants": [],
-                "reference": 7,
-                "stock": 60
-              },
-              "quantity": 1,
-              "selectedVariants": [],
-              "pricePerUnit": 140,
-              "selectedBundleOptionId": null,
-              "selectedOptionsPerItem": []
-            }
-          ],
+          "status": "pending",
+          "createdAt": "2026-02-19T14:54:41.263Z"
+        },
+        {
+          "total": {
+            "totalPrice": 56
+          },
+          "_id": "69970c98cfd6101132ee8179",
+          "reference": 2541,
+          "customer": {
+            "name": "حسام مريزق",
+            "phone": "96455444",
+            "address": "Sousse",
+            "city": "Sousse"
+          },
           "status": "uploaded",
-          "deliveryCompany": "navex",
-          "history": [
-            {
-              "actionTaker": "Customer",
-              "status": "abandoned",
-              "timestamp": "2026-01-25T18:05:51.295Z"
-            },
-            {
-              "status": "confirmed",
-              "timestamp": "2026-01-25T18:37:17.742Z",
-              "actionTaker": "adamwalha20@gmail.com"
-            },
-            {
-              "status": "uploaded",
-              "timestamp": "2026-01-25T18:37:17.785Z",
-              "actionTaker": "adamwalha20@gmail.com"
-            }
-          ],
-          "store": "697654f4bc02af0e6145c832",
-          "session": "9ffbf534-57ac-4dfd-b046-74962f80262f",
-          "paymentStatus": "paid",
-          "duplicated": false,
-          "isTest": true,
-          "currencyCode": "TND",
-          "createdAt": "2026-01-25T18:05:38.007Z",
-          "updatedAt": "2026-01-25T18:37:17.791Z",
-          "queuedAt": "2026-01-25T18:05:36.000Z",
-          "archived": false,
-          "subscription": "000000000000000000000000",
-          "barcode": "699643662371",
-          "deliveryTrackable": true,
-          "exchange": false
+          "createdAt": "2026-02-19T13:14:00.876Z"
+        },
+        {
+          "total": {
+            "totalPrice": 56
+          },
+          "_id": "69970a03414b003c80e130a9",
+          "reference": 2540,
+          "customer": {
+            "name": "Oumaima chebbi",
+            "phone": "50154683",
+            "address": "Tozeur",
+            "city": "Tozeur"
+          },
+          "status": "uploaded",
+          "createdAt": "2026-02-19T13:02:59.817Z"
+        },
+        {
+          "total": {
+            "totalPrice": 56
+          },
+          "_id": "6996fb38414b003c80e04cc2",
+          "reference": 2539,
+          "customer": {
+            "name": "إلهام",
+            "phone": "98184740",
+            "address": "Sousse",
+            "city": "Sousse"
+          },
+          "status": "uploaded",
+          "createdAt": "2026-02-19T11:59:52.526Z"
+        },
+        {
+          "total": {
+            "totalPrice": 56
+          },
+          "_id": "6996f1b9414b003c80dfd265",
+          "reference": 2538,
+          "customer": {
+            "name": "ناجية بن حدادة",
+            "phone": "22940883",
+            "address": "Medenine",
+            "city": "Medenine"
+          },
+          "status": "uploaded",
+          "createdAt": "2026-02-19T11:19:21.919Z"
         }
       ]
     }
